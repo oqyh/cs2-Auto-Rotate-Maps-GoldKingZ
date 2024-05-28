@@ -17,12 +17,13 @@
 ## .:[ Configuration ]:.
 
 > [!CAUTION]
-> Config Located In ..\addons\counterstrikesharp\plugins\Auto-Rotate-Maps-GoldKingZ\config\config.json                                           
->
+> Config Located In ..\addons\counterstrikesharp\plugins\Auto-Rotate-Maps-GoldKingZ\config\config.json      
+>                                                                                                                                                                                                  
+> Map Config Located In ..\addons\counterstrikesharp\plugins\Auto-Rotate-Maps-GoldKingZ\config\RotationServerMapList.txt                                           
+>                                                                                                                                                                                                 
 
 ```json
 {
-  // Map List Located In ..\addons\counterstrikesharp\plugins\Auto-Rotate-Maps-GoldKingZ\config\RotationServerMapList.txt
   // (0) = Disable
   // (1) = Get Maps From Top To Bottom In RotationServerMapList.txt
   // (2) = Get Random + Not Duplicated Maps In RotationServerMapList.txt
