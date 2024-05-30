@@ -1,4 +1,4 @@
-# [CS2] Auto-Rotate-Maps-GoldKingZ (1.0.0)
+# [CS2] Auto-Rotate-Maps-GoldKingZ (1.0.1)
 
 ### Auto Rotate Maps Depend Players In Server
 
@@ -20,13 +20,23 @@
 > Config Located In ..\addons\counterstrikesharp\plugins\Auto-Rotate-Maps-GoldKingZ\config\config.json      
 >                                                                                                                                                                                                  
 > Map Config Located In ..\addons\counterstrikesharp\plugins\Auto-Rotate-Maps-GoldKingZ\config\RotationServerMapList.txt                                           
->                                                                                                                                                                                                 
+>                                                                                                                                                                                                  
+> Map Schedule Config Located In ..\addons\counterstrikesharp\plugins\Auto-Rotate-Maps-GoldKingZ\config\RotationServerMapListSchedule.txt                                           
 
 ```json
 {
+  //Load Map List Path 
+  "Load_MapList_Path": "csgo/addons/counterstrikesharp/plugins/Auto-Rotate-Maps-GoldKingZ/config/RotationServerMapList.txt",
+
+  //Prefix Of ds_workshop_changelevel
+  "Prefix_For_Ds_Workshop_Changelevel": "ds:",
+
+  //Prefix Of host_workshop_map
+  "Prefix_For_Host_Workshop_Map": "host:",
+
   // (0) = Disable
-  // (1) = Get Maps From Top To Bottom In RotationServerMapList.txt
-  // (2) = Get Random + Not Duplicated Maps In RotationServerMapList.txt
+  // (1) = Get Maps From Top To Bottom
+  // (2) = Get Random + Not Duplicated Maps
   "RotateMode": 1,
 
   //Wait X Mins Before You Do RotateMode 
@@ -34,6 +44,16 @@
 
   //Do RotateMode When X Players In Server OR Less
   "RotateWhenXPlayersInServerORLess": 0,
+
+  //Enable Schedule?
+  "EnableSchedule": false,
+
+  //If EnableSchedule Enabled Which Time Would You Like
+  "ScheduleFromTime": "01:00",
+  "ScheduleToTime": "06:00",
+
+  //Load Map List Path For Schedule
+  "Schedule_MapList_Path": "csgo/addons/counterstrikesharp/plugins/Auto-Rotate-Maps-GoldKingZ/config/RotationServerMapListSchedule.txt",
 
 //-----------------------------------------------------------------------------------------
 
@@ -86,6 +106,15 @@
 
 ## .:[ Change Log ]:.
 ```
+(1.0.0)
+-Added Load_MapList_Path
+-Added Prefix_For_Ds_Workshop_Changelevel
+-Added Prefix_For_Host_Workshop_Map
+-Added EnableSchedule
+-Added ScheduleFromTime
+-Added ScheduleToTime
+-Added Schedule_MapList_Path
+
 (1.0.0)
 -Initial Release
 ```
