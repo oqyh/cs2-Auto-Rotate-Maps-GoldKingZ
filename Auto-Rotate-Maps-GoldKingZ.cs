@@ -15,16 +15,15 @@ namespace Auto_Rotate_Maps_GoldKingZ;
 public class AutoRotateMapsGoldKingZ : BasePlugin
 {
     public override string ModuleName => "Auto Rotate Maps (Auto Rotate Maps Depend Players In Server)";
-    public override string ModuleVersion => "1.0.0";
+    public override string ModuleVersion => "1.0.1";
     public override string ModuleAuthor => "Gold KingZ";
     public override string ModuleDescription => "https://github.com/oqyh";
 
     public override void Load(bool hotReload)
     {
-        Globals.maplist = Path.Combine(ModuleDirectory, "config/RotationServerMapList.txt");
-
         Configs.Load(ModuleDirectory);
         Configs.Shared.CookiesModule = ModuleDirectory;
+        
         RegisterListener<Listeners.OnClientConnected>(OnClientConnected);
         RegisterListener<Listeners.OnClientDisconnectPost>(OnClientDisconnectPost);
         RegisterListener<Listeners.OnMapStart>(OnMapStart);
@@ -142,10 +141,43 @@ public class AutoRotateMapsGoldKingZ : BasePlugin
         {
             if(Configs.GetConfigData().RotateMode == 1)
             {
-                Globals.GmapName = Helper.GetNextMap();
+                if (Configs.GetConfigData().EnableSchedule)
+                {
+                    DateTime now = DateTime.Now;
+                    string currentTime = now.ToString("HH:mm");
+                    if (String.Compare(currentTime, Configs.GetConfigData().ScheduleFromTime) >= 0 &&
+                        String.Compare(currentTime, Configs.GetConfigData().ScheduleToTime) < 0)
+                    {
+                        Globals.GmapName = Helper.GetNextMaps();
+                    }else
+                    {
+                        Globals.GmapName = Helper.GetNextMap();
+                    }
+                }else
+                {
+                    Globals.GmapName = Helper.GetNextMap();
+                }
+                        
             }else if(Configs.GetConfigData().RotateMode == 2)
             {
                 Globals.GmapName = Helper.GetRandomMap();
+
+                if (Configs.GetConfigData().EnableSchedule)
+                {
+                    DateTime now = DateTime.Now;
+                    string currentTime = now.ToString("HH:mm");
+                    if (String.Compare(currentTime, Configs.GetConfigData().ScheduleFromTime) >= 0 &&
+                        String.Compare(currentTime, Configs.GetConfigData().ScheduleToTime) < 0)
+                    {
+                        Globals.GmapName = Helper.GetRandomMaps();
+                    }else
+                    {
+                        Globals.GmapName = Helper.GetRandomMap();
+                    }
+                }else
+                {
+                    Globals.GmapName = Helper.GetRandomMap();
+                }
             }
 
             if(Configs.GetConfigData().TextLog_Enable && Configs.GetConfigData().RotateMode != 0)
@@ -224,28 +256,28 @@ public class AutoRotateMapsGoldKingZ : BasePlugin
                 
             }
 
-            if (Globals.GmapName.StartsWith("ds:") )
+            if (Globals.GmapName.StartsWith(Configs.GetConfigData().Prefix_For_Ds_Workshop_Changelevel))
             {
                 Server.NextFrame(() =>
                 {
                     AddTimer(2.00f, () =>
                     {
-                        string dsworkshop = Globals.GmapName.TrimStart().Substring("ds:".Length).Trim();
+                        string dsworkshop = Globals.GmapName.TrimStart().Substring(Configs.GetConfigData().Prefix_For_Ds_Workshop_Changelevel.Length).Trim();
                         Server.ExecuteCommand($"ds_workshop_changelevel {dsworkshop}");
                     }, TimerFlags.STOP_ON_MAPCHANGE);
                 });
                 
-            }else if (Globals.GmapName.StartsWith("host:"))
+            }else if (Globals.GmapName.StartsWith(Configs.GetConfigData().Prefix_For_Host_Workshop_Map))
             {
                 Server.NextFrame(() =>
                 {
                     AddTimer(2.00f, () =>
                     {
-                        string hostworkshop = Globals.GmapName.TrimStart().Substring("host:".Length).Trim();
+                        string hostworkshop = Globals.GmapName.TrimStart().Substring(Configs.GetConfigData().Prefix_For_Host_Workshop_Map.Length).Trim();
                         Server.ExecuteCommand($"host_workshop_map {hostworkshop}");
                     }, TimerFlags.STOP_ON_MAPCHANGE);
                 });
-            }else if (!(Globals.GmapName.StartsWith("ds:") || Globals.GmapName.StartsWith("host:")))
+            }else if (!(Globals.GmapName.StartsWith(Configs.GetConfigData().Prefix_For_Ds_Workshop_Changelevel) || Globals.GmapName.StartsWith(Configs.GetConfigData().Prefix_For_Host_Workshop_Map)))
             {
                 Server.NextFrame(() =>
                 {
@@ -266,6 +298,7 @@ public class AutoRotateMapsGoldKingZ : BasePlugin
             Globals.RotationTimer2 = null;
         }
     }
+    
     private void OnMapEnd()
     {
         Helper.ClearVariables();

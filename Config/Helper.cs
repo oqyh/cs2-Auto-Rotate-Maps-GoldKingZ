@@ -142,63 +142,154 @@ public class Helper
     {
         return GetGameRules()?.WarmupPeriod ?? false;
     }
-    public static void CreateDefaultWeaponsJson2(string filePath)
-{
-    var requiredHeaderLines = new List<string>
+    public static void CreateDefaultWeaponsJson(string filePath)
     {
-        "//////////// Examples ///////////////////",
-        "//Using ds: Means What map list in ds_workshop_listmaps (ex: ds:surf_boreas)",
-        "//Using host: To Get Any Workshop Map example https://steamcommunity.com/sharedfiles/filedetails/?id=3112654794 (ex: host:3112654794)",
-        "//Using Without any ds: or host: means what inside /../csgo/maps/  (ex: de_dust2)",
-        "////VVVVVVVVVV ADD MAPS DOWN HERE VVVVVVVVVVVV////////////////"
-    };
-
-    var mapLines = new List<string>
-    {
-        "host:3112654794",
-        "host:3070321829",
-        "de_dust2",
-        "de_mirage",
-        "ds:surf_utopia_njv",
-        "ds:surf_kitsune"
-    };
-
-    if (!File.Exists(filePath))
-    {
-        var defaultContent = new List<string>(requiredHeaderLines);
-        defaultContent.AddRange(mapLines);
-        File.WriteAllLines(filePath, defaultContent);
-    }
-    else
-    {
-        var existingLines = File.ReadAllLines(filePath).ToList();
-        bool headerMissing = false;
-
-        foreach (var headerLine in requiredHeaderLines)
+        var requiredHeaderLines = new List<string>
         {
-            if (!existingLines.Contains(headerLine))
+            "//////////// Examples ///////////////////",
+            "//Using ds: Means What map list in ds_workshop_listmaps (ex: ds:surf_boreas)",
+            "//Using host: To Get Any Workshop Map example https://steamcommunity.com/sharedfiles/filedetails/?id=3112654794 (ex: host:3112654794)",
+            "//Using Without any ds: or host: means what inside /../csgo/maps/  (ex: de_dust2)",
+            "////VVVVVVVVVV ADD MAPS DOWN HERE VVVVVVVVVVVV////////////////"
+        };
+
+        var mapLines = new List<string>
+        {
+            "host:3112654794",
+            "host:3070321829",
+            "de_dust2",
+            "de_mirage",
+            "ds:surf_utopia_njv",
+            "ds:surf_kitsune"
+        };
+
+        if (!File.Exists(filePath))
+        {
+            var defaultContent = new List<string>(requiredHeaderLines);
+            defaultContent.AddRange(mapLines);
+            File.WriteAllLines(filePath, defaultContent);
+        }
+        else
+        {
+            var existingLines = File.ReadAllLines(filePath).ToList();
+            bool headerMissing = false;
+
+            foreach (var headerLine in requiredHeaderLines)
             {
-                headerMissing = true;
-                int insertIndex = requiredHeaderLines.IndexOf(headerLine);
-                existingLines.Insert(insertIndex, headerLine);
+                if (!existingLines.Contains(headerLine))
+                {
+                    headerMissing = true;
+                    int insertIndex = requiredHeaderLines.IndexOf(headerLine);
+                    existingLines.Insert(insertIndex, headerLine);
+                }
+            }
+
+            if (headerMissing)
+            {
+                File.WriteAllLines(filePath, existingLines);
             }
         }
-
-        if (headerMissing)
+    }
+    public static void CreateDefaultWeaponsJson2(string filePath)
+    {
+        var requiredHeaderLines = new List<string>
         {
-            File.WriteAllLines(filePath, existingLines);
+            "//////////// Examples ///////////////////",
+            "//This Map List If EnableSchedule enabled Will Excute This Map List From (ScheduleFromTime) To (ScheduleToTime)",
+            "//Using ds: Means What map list in ds_workshop_listmaps (ex: ds:surf_boreas)",
+            "//Using host: To Get Any Workshop Map example https://steamcommunity.com/sharedfiles/filedetails/?id=3112654794 (ex: host:3112654794)",
+            "//Using Without any ds: or host: means what inside /../csgo/maps/  (ex: de_dust2)",
+            "////VVVVVVVVVV ADD MAPS DOWN HERE VVVVVVVVVVVV////////////////"
+        };
+
+        var mapLines = new List<string>
+        {
+            "host:3072504294",
+            "host:3071776243",
+            "host:3094723224",
+            "host:3070290869"
+        };
+
+        if (!File.Exists(filePath))
+        {
+            var defaultContent = new List<string>(requiredHeaderLines);
+            defaultContent.AddRange(mapLines);
+            File.WriteAllLines(filePath, defaultContent);
+        }
+        else
+        {
+            var existingLines = File.ReadAllLines(filePath).ToList();
+            bool headerMissing = false;
+
+            foreach (var headerLine in requiredHeaderLines)
+            {
+                if (!existingLines.Contains(headerLine))
+                {
+                    headerMissing = true;
+                    int insertIndex = requiredHeaderLines.IndexOf(headerLine);
+                    existingLines.Insert(insertIndex, headerLine);
+                }
+            }
+
+            if (headerMissing)
+            {
+                File.WriteAllLines(filePath, existingLines);
+            }
         }
     }
-}
+    public static void SetCurrentMapList()
+    {
+        if (Configs.GetConfigData().EnableSchedule)
+        {
+            DateTime now = DateTime.Now;
+            string currentTime = now.ToString("HH:mm");
+            if (String.Compare(currentTime, Configs.GetConfigData().ScheduleFromTime) >= 0 &&
+                String.Compare(currentTime, Configs.GetConfigData().ScheduleToTime) < 0)
+            {
+                if (string.IsNullOrEmpty(Configs.GetConfigData().Schedule_MapList_Path))
+                {
+                    Globals.maplist = Path.Combine(Configs.Shared.CookiesModule!, "config/RotationServerMapListSchedule.txt");
+                }
+                else
+                {
+                    Globals.maplist = Path.Combine(Server.GameDirectory, Configs.GetConfigData().Schedule_MapList_Path);
+                }
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(Configs.GetConfigData().Load_MapList_Path))
+                {
+                    Globals.maplist = Path.Combine(Configs.Shared.CookiesModule!, "config/RotationServerMapList.txt");
+                }
+                else
+                {
+                    Globals.maplist = Path.Combine(Server.GameDirectory, Configs.GetConfigData().Load_MapList_Path);
+                }
+            }
+        }
+        else
+        {
+            if (string.IsNullOrEmpty(Configs.GetConfigData().Load_MapList_Path))
+            {
+                Globals.maplist = Path.Combine(Configs.Shared.CookiesModule!, "config/RotationServerMapList.txt");
+            }
+            else
+            {
+                Globals.maplist = Path.Combine(Server.GameDirectory, Configs.GetConfigData().Load_MapList_Path);
+            }
+        }
+    }
     public static string GetRandomMap()
     {
+        SetCurrentMapList();
+
         if (Globals.availableMaps.Count == 0)
         {
             if (File.Exists(Globals.maplist))
             {
                 string[] lines = File.ReadAllLines(Globals.maplist);
                 Globals.allMaps = lines.Where(line => !line.Trim().StartsWith("//")).ToList();
-                
+
                 if (Globals.allMaps.Count > 0)
                 {
                     Globals.availableMaps = new List<string>(Globals.allMaps);
@@ -206,7 +297,7 @@ public class Helper
                 else
                 {
                     Console.WriteLine("|||||||||||||||||||||||||||||| E R R O R ||||||||||||||||||||||||||||||");
-                    Console.WriteLine("[Auto-Rotate-Maps-GoldKingZ] RotationServerMapList.txt is empty or contains only comments");
+                    Console.WriteLine($"[Auto-Rotate-Maps-GoldKingZ] {Globals.maplist} is empty or contains only comments");
                     Console.WriteLine("|||||||||||||||||||||||||||||| E R R O R ||||||||||||||||||||||||||||||");
                     return null!;
                 }
@@ -214,7 +305,7 @@ public class Helper
             else
             {
                 Console.WriteLine("|||||||||||||||||||||||||||||| E R R O R ||||||||||||||||||||||||||||||");
-                Console.WriteLine("[Auto-Rotate-Maps-GoldKingZ] RotationServerMapList.txt does not exist");
+                Console.WriteLine($"[Auto-Rotate-Maps-GoldKingZ] {Globals.maplist} does not exist");
                 Console.WriteLine("|||||||||||||||||||||||||||||| E R R O R ||||||||||||||||||||||||||||||");
                 return null!;
             }
@@ -227,13 +318,54 @@ public class Helper
 
         return selectedMap;
     }
+    public static string GetRandomMaps()
+    {
+        SetCurrentMapList();
+
+        if (Globals.availableMapss.Count == 0)
+        {
+            if (File.Exists(Globals.maplist))
+            {
+                string[] lines = File.ReadAllLines(Globals.maplist);
+                Globals.allMapss = lines.Where(line => !line.Trim().StartsWith("//")).ToList();
+
+                if (Globals.allMapss.Count > 0)
+                {
+                    Globals.availableMapss = new List<string>(Globals.allMapss);
+                }
+                else
+                {
+                    Console.WriteLine("|||||||||||||||||||||||||||||| E R R O R ||||||||||||||||||||||||||||||");
+                    Console.WriteLine($"[Auto-Rotate-Maps-GoldKingZ] {Globals.maplist} is empty or contains only comments");
+                    Console.WriteLine("|||||||||||||||||||||||||||||| E R R O R ||||||||||||||||||||||||||||||");
+                    return null!;
+                }
+            }
+            else
+            {
+                Console.WriteLine("|||||||||||||||||||||||||||||| E R R O R ||||||||||||||||||||||||||||||");
+                Console.WriteLine($"[Auto-Rotate-Maps-GoldKingZ] {Globals.maplist} does not exist");
+                Console.WriteLine("|||||||||||||||||||||||||||||| E R R O R ||||||||||||||||||||||||||||||");
+                return null!;
+            }
+        }
+
+        Random random = new Random();
+        int randomIndex = random.Next(0, Globals.availableMapss.Count);
+        string selectedMap = Globals.availableMapss[randomIndex];
+        Globals.availableMapss.RemoveAt(randomIndex);
+
+        return selectedMap;
+    }
 
     public static string GetNextMap()
     {
+        SetCurrentMapList();
+
         if (!File.Exists(Globals.maplist))
         {
             Console.WriteLine("|||||||||||||||||||||||||||||| E R R O R ||||||||||||||||||||||||||||||");
-            Console.WriteLine("[Auto-Rotate-Maps-GoldKingZ] RotationServerMapList.txt does not exist");
+            Console.WriteLine($"[Auto-Rotate-Maps-GoldKingZ] {Globals.maplist} does not exist");
             Console.WriteLine("|||||||||||||||||||||||||||||| E R R O R ||||||||||||||||||||||||||||||");
             return null!;
         }
@@ -253,10 +385,41 @@ public class Helper
         else
         {
             Console.WriteLine("|||||||||||||||||||||||||||||| E R R O R ||||||||||||||||||||||||||||||");
-            Console.WriteLine("[Auto-Rotate-Maps-GoldKingZ] RotationServerMapList.txt is empty or contains only comments");
+            Console.WriteLine($"[Auto-Rotate-Maps-GoldKingZ] {Globals.maplist} is empty or contains only comments");
             Console.WriteLine("|||||||||||||||||||||||||||||| E R R O R ||||||||||||||||||||||||||||||");
         }
+        return null!;
+    }
+    public static string GetNextMaps()
+    {
+        SetCurrentMapList();
 
+        if (!File.Exists(Globals.maplist))
+        {
+            Console.WriteLine("|||||||||||||||||||||||||||||| E R R O R ||||||||||||||||||||||||||||||");
+            Console.WriteLine($"[Auto-Rotate-Maps-GoldKingZ] {Globals.maplist} does not exist");
+            Console.WriteLine("|||||||||||||||||||||||||||||| E R R O R ||||||||||||||||||||||||||||||");
+            return null!;
+        }
+
+        if (Globals._liness == null || Globals._currentIndexs == Globals._liness.Length - 1)
+        {
+            string[] lines = File.ReadAllLines(Globals.maplist);
+            Globals._liness = lines.Where(line => !line.Trim().StartsWith("//")).ToArray();
+            Globals._currentIndexs = -1;
+        }
+
+        if (Globals._liness.Length > 0)
+        {
+            Globals._currentIndexs++;
+            return Globals._liness[Globals._currentIndexs];
+        }
+        else
+        {
+            Console.WriteLine("|||||||||||||||||||||||||||||| E R R O R ||||||||||||||||||||||||||||||");
+            Console.WriteLine($"[Auto-Rotate-Maps-GoldKingZ] {Globals.maplist} is empty or contains only comments");
+            Console.WriteLine("|||||||||||||||||||||||||||||| E R R O R ||||||||||||||||||||||||||||||");
+        }
         return null!;
     }
     public static async Task SendToDiscordWebhookNormal(string webhookUrl, string message)

@@ -11,7 +11,9 @@ namespace Auto_Rotate_Maps_GoldKingZ.Config
         
         private static readonly string ConfigDirectoryName = "config";
         private static readonly string ConfigFileName = "config.json";
-        private static readonly string FilePath2 = "RotationServerMapList.txt";
+        private static readonly string FilePath = "RotationServerMapList.txt";
+        private static readonly string FilePath2 = "RotationServerMapListSchedule.txt";
+        private static string? _FilePath;
         private static string? _FilePath2;
         private static string? _configFilePath;
         private static ConfigData? _configData;
@@ -50,6 +52,9 @@ namespace Auto_Rotate_Maps_GoldKingZ.Config
                 Directory.CreateDirectory(configFileDirectory);
             }
 
+            _FilePath = Path.Combine(configFileDirectory, FilePath);
+            Helper.CreateDefaultWeaponsJson(_FilePath);
+
             _FilePath2 = Path.Combine(configFileDirectory, FilePath2);
             Helper.CreateDefaultWeaponsJson2(_FilePath2);
             
@@ -87,6 +92,9 @@ namespace Auto_Rotate_Maps_GoldKingZ.Config
 
         public class ConfigData
         {
+            public string Load_MapList_Path { get; set; }
+            public string Prefix_For_Ds_Workshop_Changelevel { get; set; }
+            public string Prefix_For_Host_Workshop_Map { get; set; }
             private int _RotateMode;
             public int RotateMode
             {
@@ -108,6 +116,11 @@ namespace Auto_Rotate_Maps_GoldKingZ.Config
             }
             public float RotateXTimerInMins { get; set; }
             public int RotateWhenXPlayersInServerORLess { get; set; }
+            public bool EnableSchedule { get; set; }
+            public string ScheduleFromTime { get; set; }
+            public string ScheduleToTime { get; set; }
+            public string Schedule_MapList_Path { get; set; }
+
             public string empty { get; set; }
             public bool TextLog_Enable { get; set; }
             public string TextLog_MessageFormat { get; set; }
@@ -158,9 +171,16 @@ namespace Auto_Rotate_Maps_GoldKingZ.Config
             
             public ConfigData()
             {
+                Load_MapList_Path = "csgo/addons/counterstrikesharp/plugins/Auto-Rotate-Maps-GoldKingZ/config/RotationServerMapList.txt";
+                Prefix_For_Ds_Workshop_Changelevel = "ds:";
+                Prefix_For_Host_Workshop_Map = "host:";
                 RotateMode = 1;
                 RotateXTimerInMins = 5.0f;
                 RotateWhenXPlayersInServerORLess = 0;
+                EnableSchedule = false;
+                ScheduleFromTime = "01:00";
+                ScheduleToTime = "06:00";
+                Schedule_MapList_Path = "csgo/addons/counterstrikesharp/plugins/Auto-Rotate-Maps-GoldKingZ/config/RotationServerMapListSchedule.txt";
                 empty = "-----------------------------------------------------------------------------------";
                 TextLog_Enable = false;
                 TextLog_MessageFormat = "[{DATE} - {TIME}] Server Has Less Players Changing Map To [{MAP}]";
