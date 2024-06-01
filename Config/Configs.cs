@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Localization;
 
 namespace Auto_Rotate_Maps_GoldKingZ.Config
 {
@@ -7,6 +8,7 @@ namespace Auto_Rotate_Maps_GoldKingZ.Config
     {
         public static class Shared {
             public static string? CookiesModule { get; set; }
+            public static IStringLocalizer? StringLocalizer { get; set; }
         }
         
         private static readonly string ConfigDirectoryName = "config";
@@ -93,8 +95,37 @@ namespace Auto_Rotate_Maps_GoldKingZ.Config
         public class ConfigData
         {
             public string Load_MapList_Path { get; set; }
-            public string Prefix_For_Ds_Workshop_Changelevel { get; set; }
-            public string Prefix_For_Host_Workshop_Map { get; set; }
+            private string? _Prefix_For_Ds_Workshop_Changelevel;
+
+            public string Prefix_For_Ds_Workshop_Changelevel
+            {
+                get => _Prefix_For_Ds_Workshop_Changelevel!;
+                set
+                {
+                    _Prefix_For_Ds_Workshop_Changelevel = value;
+                    if (value.Contains(":"))
+                    {
+                        _Prefix_For_Ds_Workshop_Changelevel = value.Replace(":", "");
+                    }
+                }
+            }
+
+            private string? _Prefix_For_Host_Workshop_Map;
+
+            public string Prefix_For_Host_Workshop_Map
+            {
+                get => _Prefix_For_Host_Workshop_Map!;
+                set
+                {
+                    _Prefix_For_Host_Workshop_Map = value;
+                    if (value.Contains(":"))
+                    {
+                        _Prefix_For_Host_Workshop_Map = value.Replace(":", "");
+                    }
+                }
+            }
+
+            
             private int _RotateMode;
             public int RotateMode
             {
@@ -116,6 +147,9 @@ namespace Auto_Rotate_Maps_GoldKingZ.Config
             }
             public float RotateXTimerInMins { get; set; }
             public int RotateWhenXPlayersInServerORLess { get; set; }
+            public bool ForceRotateMapsOnTimelimitEndOrMaxRoundEnd { get; set; }
+            public float DelayXInSecsChangeMapOnTimelimitEnd { get; set; }
+            public float DelayXInSecsChangeMapOnRoundEnd { get; set; }
             public bool EnableSchedule { get; set; }
             public string ScheduleFromTime { get; set; }
             public string ScheduleToTime { get; set; }
@@ -172,11 +206,14 @@ namespace Auto_Rotate_Maps_GoldKingZ.Config
             public ConfigData()
             {
                 Load_MapList_Path = "csgo/addons/counterstrikesharp/plugins/Auto-Rotate-Maps-GoldKingZ/config/RotationServerMapList.txt";
-                Prefix_For_Ds_Workshop_Changelevel = "ds:";
-                Prefix_For_Host_Workshop_Map = "host:";
+                Prefix_For_Ds_Workshop_Changelevel = "ds";
+                Prefix_For_Host_Workshop_Map = "host";
                 RotateMode = 1;
                 RotateXTimerInMins = 5.0f;
                 RotateWhenXPlayersInServerORLess = 0;
+                ForceRotateMapsOnTimelimitEndOrMaxRoundEnd = false;
+                DelayXInSecsChangeMapOnTimelimitEnd = 2.0f;
+                DelayXInSecsChangeMapOnRoundEnd = 0.0f;
                 EnableSchedule = false;
                 ScheduleFromTime = "01:00";
                 ScheduleToTime = "06:00";

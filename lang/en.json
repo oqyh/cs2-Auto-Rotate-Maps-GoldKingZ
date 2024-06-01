@@ -1,0 +1,11 @@
+{
+	"timeleft.5mins": "{green}Gold KingZ {grey}| {grey}Time Remaining: {lime}5 Mins {grey}Map Will Change",
+    "timeleft.2mins": "{green}Gold KingZ {grey}| {grey}Time Remaining: {lime}2 Mins {grey}Map Will Change",
+    "timeleft.1min": "{green}Gold KingZ {grey}| {grey}Time Remaining: {lime}1 Min {grey}Map Will Change",
+    "timeleft.30secs": "{green}Gold KingZ {grey}| {grey}Time Remaining: {lime}30 Secs {grey}Map Will Change",
+    "timeleft.15secs": "{green}Gold KingZ {grey}| {grey}Time Remaining: {lime}15 Secs {grey}Map Will Change",
+    "timeleft.3secs": "{green}Gold KingZ {grey}| {grey}Time Remaining: {lime}3",
+    "timeleft.2secs": "{green}Gold KingZ {grey}| {grey}Time Remaining: {lime}2",
+    "timeleft.1sec": "{green}Gold KingZ {grey}| {grey}Time Remaining: {lime}1",
+    "mapchange": "{green}Gold KingZ {grey}| {grey}Changing To Map {purple}{0}"
+}

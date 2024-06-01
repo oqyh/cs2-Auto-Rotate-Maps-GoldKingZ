@@ -102,7 +102,23 @@ public class Helper
     }
     public static void ClearVariables()
     {
+        Globals.CTWins = 0;
+        Globals.TWins = 0;
+        Globals.mp_timelimit = 0;
+        Globals.stopwatch.Stop();
         Globals.onetime = false;
+        Globals.getvalues = false;
+        Globals.timeisup = false;
+        Globals.timeisupEnd = false;
+        Globals.timeisupTime = false;
+        Globals.fiveMinsLeftPrinted = false;
+        Globals.twoMinsLeftPrinted = false;
+        Globals.oneMinLeftPrinted = false;
+        Globals.thirtySecsLeftPrinted = false;
+        Globals.fifteenSecsLeftPrinted = false;
+        Globals.threeSecsLeftPrinted = false;
+        Globals.twoSecsLeftPrinted = false;
+        Globals.oneSecLeftPrinted = false;
         Globals.RotationTimer?.Kill();
         Globals.RotationTimer = null;
         Globals.RotationTimer2?.Kill();
@@ -150,16 +166,20 @@ public class Helper
             "//Using ds: Means What map list in ds_workshop_listmaps (ex: ds:surf_boreas)",
             "//Using host: To Get Any Workshop Map example https://steamcommunity.com/sharedfiles/filedetails/?id=3112654794 (ex: host:3112654794)",
             "//Using Without any ds: or host: means what inside /../csgo/maps/  (ex: de_dust2)",
+            "//Map Name Will Be Last <Prefix>:<MAP>:<Map Name>",
             "////VVVVVVVVVV ADD MAPS DOWN HERE VVVVVVVVVVVV////////////////"
         };
 
         var mapLines = new List<string>
         {
-            "host:3112654794",
-            "host:3070321829",
-            "de_dust2",
-            "de_mirage",
-            "ds:surf_utopia_njv",
+            "host:3112654794:surf_beeps",
+            "host:3070290869:awp_india",
+            "de_dust2:Dust 2",
+            "de_mirage:Mirage",
+            "cs_office",
+            "de_overpass:Overpass",
+            "de_nuke",
+            "ds:surf_utopia_njv:surf_utopia",
             "ds:surf_kitsune"
         };
 
@@ -199,15 +219,16 @@ public class Helper
             "//Using ds: Means What map list in ds_workshop_listmaps (ex: ds:surf_boreas)",
             "//Using host: To Get Any Workshop Map example https://steamcommunity.com/sharedfiles/filedetails/?id=3112654794 (ex: host:3112654794)",
             "//Using Without any ds: or host: means what inside /../csgo/maps/  (ex: de_dust2)",
+            "//Map Name Will Be Last <Prefix>:<MAP>:<Map Name>",
             "////VVVVVVVVVV ADD MAPS DOWN HERE VVVVVVVVVVVV////////////////"
         };
 
         var mapLines = new List<string>
         {
-            "host:3072504294",
-            "host:3071776243",
-            "host:3094723224",
-            "host:3070290869"
+            "host:3072504294:awp_cargo",
+            "host:3071776243:awp_ice",
+            "host:3094723224:awp_gony_v2",
+            "host:3070290869:awp_india"
         };
 
         if (!File.Exists(filePath))
