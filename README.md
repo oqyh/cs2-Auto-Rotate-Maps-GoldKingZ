@@ -1,4 +1,4 @@
-# [CS2] Auto-Rotate-Maps-GoldKingZ (1.0.1)
+# [CS2] Auto-Rotate-Maps-GoldKingZ (1.0.2)
 
 ### Auto Rotate Maps Depend Players In Server
 
@@ -44,6 +44,15 @@
 
   //Do RotateMode When X Players In Server OR Less
   "RotateWhenXPlayersInServerORLess": 0,
+
+  //Force Change Map When mp_timelimit End Or Reach mp_maxrounds
+  "ForceRotateMapsOnTimelimitEndOrMaxRoundEnd": false,
+
+  //If ForceRotateMapsOnTimelimitEndOrMaxRoundEnd Enabled And mp_timelimit End How Much Delay Would You Like (In Secs)
+  "DelayXInSecsChangeMapOnTimelimitEnd": 2,
+
+  //If ForceRotateMapsOnTimelimitEndOrMaxRoundEnd Enabled And mp_maxrounds Reach How Much Delay Would You Like (In Secs)
+  "DelayXInSecsChangeMapOnRoundEnd": 0,
 
   //Enable Schedule?
   "EnableSchedule": false,
@@ -106,7 +115,16 @@
 
 ## .:[ Change Log ]:.
 ```
-(1.0.0)
+(1.0.2)
+-Fix Reset Timer On Players Connect / Disconnect
+-Removed Warning sv_hibernate_when_empty
+-Added Lang (Time Left/Change Map)
+-Added ForceRotateMapsOnTimelimitEndOrMaxRoundEnd
+-Added DelayXInSecsChangeMapOnTimelimitEnd
+-Added DelayXInSecsChangeMapOnRoundEnd
+-Added Map Name Will Be Last <Prefix>:<MAP>:<Map Name>
+
+(1.0.1)
 -Added Load_MapList_Path
 -Added Prefix_For_Ds_Workshop_Changelevel
 -Added Prefix_For_Host_Workshop_Map
